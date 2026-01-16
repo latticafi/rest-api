@@ -6,6 +6,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "strict": true
+    "resolveJsonModule": true,
+    "strict": true,
+    "esModuleInterop": true
   }
 }

@@ -1,16 +1,12 @@
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 
+import { OpenAPIHono } from "@hono/zod-openapi";
 import { config } from "dotenv";
-import { Hono } from "hono";
 
 config();
 
-export function createRouter() {
-  return new Hono({ strict: false });
-}
-
 export default function createApp() {
-  const app = new Hono({ strict: false });
+  const app = new OpenAPIHono({ strict: false });
 
   app.notFound((context) => {
     return context.json(
