@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # pnpm
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 20
+    labels: [dependencies]
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+        patterns: ["*"]
