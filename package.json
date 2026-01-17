@@ -9,12 +9,17 @@
   "dependencies": {
     "@hono/zod-openapi": "^1.2.0",
     "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.1",
     "hono": "^4.11.4",
+    "pg": "^8.17.1",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.0.1",
     "@types/bun": "latest",
-    "eslint": "^9.39.2"
+    "@types/pg": "^8.16.0",
+    "drizzle-kit": "^0.31.8",
+    "eslint": "^9.39.2",
+    "tsx": "^4.21.0"
   }
 }
