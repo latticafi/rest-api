@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@hono/zod-openapi':
         specifier: ^1.2.0
-        version: 1.2.0(hono@4.11.4)(zod@4.3.5)
+        version: 1.2.0(hono@4.11.7)(zod@4.3.5)
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
       hono:
-        specifier: ^4.11.4
-        version: 4.11.4
+        specifier: ^4.11.7
+        version: 4.11.7
       zod:
         specifier: ^4.3.5
         version: 4.3.5
@@ -514,8 +514,8 @@ packages:
     resolution: {integrity: sha512-LgQMM4WXU3QI+SYgEc2liRgznaD5ojbmY3sb8LxyguVkIg5FxdpTkvk72te2R38/TGKxH634oLxXRGY6d7AP+Q==}
     engines: {node: '>=10.13.0'}
 
-  entities@7.0.0:
-    resolution: {integrity: sha512-FDWG5cmEYf2Z00IkYRhbFrwIwvdFKH07uV8dvNy0omp/Qb1xcyCWp2UDtcwJF4QZZvk0sLudP6/hAu42TaqVhQ==}
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
     engines: {node: '>=0.12'}
 
   escalade@3.2.0:
@@ -821,8 +821,8 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
-  hono@4.11.4:
-    resolution: {integrity: sha512-U7tt8JsyrxSRKspfhtLET79pU8K+tInj5QZXs1jSugO1Vq5dFj3kmZsRldo29mTBfcjDRVRXrEZ6LS63Cog9ZA==}
+  hono@4.11.7:
+    resolution: {integrity: sha512-l7qMiNee7t82bH3SeyUCt9UF15EVmaBvsppY2zQtrbIhl/yzBTny+YUxsVjSjQ6gaqaeVtZmGocom8TzBlA4Yw==}
     engines: {node: '>=16.9.0'}
 
   html-entities@2.6.0:
@@ -1524,17 +1524,17 @@ snapshots:
       '@eslint/core': 1.0.1
       levn: 0.4.1
 
-  '@hono/zod-openapi@1.2.0(hono@4.11.4)(zod@4.3.5)':
+  '@hono/zod-openapi@1.2.0(hono@4.11.7)(zod@4.3.5)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 8.4.0(zod@4.3.5)
-      '@hono/zod-validator': 0.7.6(hono@4.11.4)(zod@4.3.5)
-      hono: 4.11.4
+      '@hono/zod-validator': 0.7.6(hono@4.11.7)(zod@4.3.5)
+      hono: 4.11.7
       openapi3-ts: 4.5.0
       zod: 4.3.5
 
-  '@hono/zod-validator@0.7.6(hono@4.11.4)(zod@4.3.5)':
+  '@hono/zod-validator@0.7.6(hono@4.11.7)(zod@4.3.5)':
     dependencies:
-      hono: 4.11.4
+      hono: 4.11.7
       zod: 4.3.5
 
   '@humanfs/core@0.19.1': {}
@@ -1693,7 +1693,7 @@ snapshots:
     dependencies:
       '@babel/parser': 7.28.6
       '@vue/shared': 3.5.26
-      entities: 7.0.0
+      entities: 7.0.1
       estree-walker: 2.0.2
       source-map-js: 1.2.1
 
@@ -1851,7 +1851,7 @@ snapshots:
       graceful-fs: 4.2.11
       tapable: 2.3.0
 
-  entities@7.0.0: {}
+  entities@7.0.1: {}
 
   escalade@3.2.0: {}
 
@@ -2206,7 +2206,7 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  hono@4.11.4: {}
+  hono@4.11.7: {}
 
   html-entities@2.6.0: {}
 
