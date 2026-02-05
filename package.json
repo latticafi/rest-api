@@ -7,13 +7,13 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
-    "@hono/zod-openapi": "^1.2.0",
-    "dotenv": "^17.2.3",
-    "hono": "^4.11.4",
-    "zod": "^4.3.5"
+    "@hono/zod-openapi": "^1.2.1",
+    "dotenv": "^17.2.4",
+    "hono": "^4.11.7",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^7.0.1",
+    "@antfu/eslint-config": "^7.2.0",
     "@types/bun": "latest",
     "eslint": "^9.39.2"
   }
