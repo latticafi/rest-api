@@ -2,13 +2,13 @@
   "name": "rest-api",
   "version": "0.0.1",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "infisical run -- bun run --hot src/index.ts",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:generate": "infisical run -- drizzle-kit generate",
+    "db:migrate": "infisical run -- drizzle-kit migrate",
+    "db:push": "infisical run -- drizzle-kit push",
+    "db:studio": "infisical run -- drizzle-kit studio"
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.2.2",
