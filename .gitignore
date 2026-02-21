@@ -6,6 +6,11 @@
 .idea/usage.statistics.xml
 .idea/shelf
 
+# claude
+.claude/
+CLAUDE.md
+digest.txt
+
 # deps
 node_modules/
 
