@@ -43,7 +43,7 @@ export const create = createRoute({
     },
   },
   responses: {
-    200: {
+    201: {
       content: {
         "application/json": {
           schema: UserSelectSchema,
@@ -51,18 +51,10 @@ export const create = createRoute({
       },
       description: "The created user",
     },
-    404: {
-      content: {
-        "application/json": {
-          schema: createMessageObjectSchema("Not Found"),
-        },
-      },
-      description: "User not found",
-    },
     422: {
       content: {
         "application/json": {
-          schema: createErrorSchema(patchUserSchema),
+          schema: createErrorSchema(UserInsertSchema),
         },
       },
       description: "The validation error(s)",
@@ -97,7 +89,7 @@ export const getOne = createRoute({
     422: {
       content: {
         "application/json": {
-          schema: createErrorSchema(patchUserSchema),
+          schema: createErrorSchema(idParamsSchema),
         },
       },
       description: "Invalid id error",
@@ -105,6 +97,51 @@ export const getOne = createRoute({
   },
 });
 
+export const patch = createRoute({
+  operationId: "patchUser",
+  path: "/users/{id}",
+  method: "patch",
+  request: {
+    params: idParamsSchema,
+    body: {
+      content: {
+        "application/json": {
+          schema: patchUserSchema,
+        },
+      },
+      description: "Fields to update",
+      required: true,
+    },
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSelectSchema,
+        },
+      },
+      description: "The updated user",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: createMessageObjectSchema("Not Found"),
+        },
+      },
+      description: "User not found",
+    },
+    422: {
+      content: {
+        "application/json": {
+          schema: createErrorSchema(patchUserSchema),
+        },
+      },
+      description: "Validation error(s)",
+    },
+  },
+});
+
 export type ListRoute = typeof list;
 export type CreateRoute = typeof create;
 export type GetOneRoute = typeof getOne;
+export type PatchRoute = typeof patch;
