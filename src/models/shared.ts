@@ -5,7 +5,7 @@ import type { ZodSchema } from "@/lib/types";
 export const idParamsSchema = z.object({
   id: z
     .string()
-    .min(3)
+    .regex(/^\d+$/, "ID must be a number")
     .openapi({
       param: {
         name: "id",
