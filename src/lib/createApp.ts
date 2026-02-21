@@ -1,9 +1,6 @@
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { config } from "dotenv";
-
-config();
 
 export default function createApp() {
   const app = new OpenAPIHono({ strict: false });
