@@ -1,55 +1,54 @@
+import { eq } from "drizzle-orm";
+
 import type { AppRouteHandler } from "@/lib/types";
 import type {
   CreateRoute,
   GetOneRoute,
   ListRoute,
+  PatchRoute,
 } from "@/routes/users/users.routes";
 
+import { db } from "@/db";
+import { users } from "@/db/schema";
+
 export const list: AppRouteHandler<ListRoute> = async (c) => {
-  // TODO: db query to fetch all
-  return c.json(
-    [
-      {
-        id: "123",
-        name: "John Doe",
-      },
-      {
-        id: "234",
-        name: "Jane Doe",
-      },
-    ],
-    200,
-  );
+  const allUsers = await db.select().from(users);
+  return c.json(allUsers, 200);
 };
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
-  const user = c.req.valid("json");
-  console.log(user);
-  // TODO: db query to create user
-  return c.json(
-    {
-      id: "2324",
-      name: user.name,
-    },
-    200,
-  );
+  const { name, email } = c.req.valid("json");
+  const [newUser] = await db.insert(users).values({ name, email }).returning();
+  return c.json(newUser, 201);
 };
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {
   const { id } = c.req.valid("param");
-  // TODO: db query to get user by id
-  const user = {
-    id,
-    name: "User Name",
-  };
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, Number(id)));
 
   if (!user) {
-    return c.json(
-      {
-        message: "Not Found",
-      },
-      404,
-    );
+    return c.json({ message: "Not Found" }, 404);
   }
+
+  return c.json(user, 200);
+};
+
+export const patch: AppRouteHandler<PatchRoute> = async (c) => {
+  const { id } = c.req.valid("param");
+  const updates = c.req.valid("json");
+
+  const [user] = await db
+    .update(users)
+    .set(updates)
+    .where(eq(users.id, Number(id)))
+    .returning();
+
+  if (!user) {
+    return c.json({ message: "Not Found" }, 404);
+  }
+
   return c.json(user, 200);
 };
