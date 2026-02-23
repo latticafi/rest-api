@@ -9,7 +9,6 @@
 # claude
 .claude/
 CLAUDE.md
-digest.txt
 
 # deps
 node_modules/
@@ -29,3 +28,5 @@ lerna-debug.log*
 
 # misc
 .DS_Store
+docs/
+digest.txt
