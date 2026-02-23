@@ -8,6 +8,13 @@
       "when": 1771644665723,
       "tag": "0000_old_guardsmen",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771808422720,
+      "tag": "0001_loud_warbird",
+      "breakpoints": true
     }
   ]
 }
