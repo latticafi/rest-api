@@ -18,7 +18,11 @@ export const list: AppRouteHandler<ListRoute> = async (c) => {
 
 export const create: AppRouteHandler<CreateRoute> = async (c) => {
   const { name, email } = c.req.valid("json");
-  const [newUser] = await db.insert(users).values({ name, email }).returning();
+  const privyDid = c.get("privyDid");
+  const [newUser] = await db
+    .insert(users)
+    .values({ name, email, privyDid })
+    .returning();
   return c.json(newUser, 201);
 };
 
