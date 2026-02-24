@@ -11,8 +11,8 @@
     "db:studio": "infisical run -- drizzle-kit studio",
     "db:test:up": "docker run --name test-pg -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test -e POSTGRES_DB=test -p 5433:5432 -d postgres:18 && sleep 2 && DATABASE_URL=postgres://test:test@localhost:5433/test drizzle-kit migrate",
     "db:test:down": "docker rm -f test-pg",
-    "test": "DATABASE_URL=postgres://test:test@localhost:5433/test bun test",
-    "test:watch": "DATABASE_URL=postgres://test:test@localhost:5433/test bun test --watch"
+    "test": "bun test",
+    "test:watch": "bun test --watch"
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.2.2",
