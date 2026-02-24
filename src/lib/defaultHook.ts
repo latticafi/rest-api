@@ -1,4 +1,5 @@
 import type { Hook } from "@hono/zod-openapi";
+
 import type { AppBindings } from "@/lib/types";
 
 const PARAM_FIELDS = new Set(["id"]);

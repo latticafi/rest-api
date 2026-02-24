@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { cleanDb, createTestToken } from "./setup";
 
 import app from "@/app";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+
+import { cleanDb, createTestToken } from "./setup";
 
 // Helpers
 
