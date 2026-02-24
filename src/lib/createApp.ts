@@ -3,9 +3,13 @@ import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { OpenAPIHono } from "@hono/zod-openapi";
 
 import type { AppBindings } from "@/lib/types";
+import { defaultHook } from "./defaultHook";
 
 export default function createApp() {
-  const app = new OpenAPIHono<AppBindings>({ strict: false });
+  const app = new OpenAPIHono<AppBindings>({
+    strict: false,
+    defaultHook,
+  });
 
   app.notFound((context) => {
     return context.json(

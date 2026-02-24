@@ -78,6 +78,14 @@ export const getOne = createRoute({
       },
       description: "The requested user",
     },
+    400: {
+      content: {
+        "application/json": {
+          schema: createErrorSchema(idParamsSchema),
+        },
+      },
+      description: "Invalid id error",
+    },
     404: {
       content: {
         "application/json": {
@@ -121,6 +129,14 @@ export const patch = createRoute({
         },
       },
       description: "The updated user",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: createErrorSchema(idParamsSchema),
+        },
+      },
+      description: "Invalid id error",
     },
     404: {
       content: {
