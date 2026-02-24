@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { cleanDb, createExpiredToken, createTestToken } from "./setup";
 
 import app from "@/app";
+
+import { cleanDb, createExpiredToken, createTestToken } from "./setup";
 
 beforeEach(async () => {
   await cleanDb();
