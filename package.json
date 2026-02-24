@@ -1,6 +1,7 @@
 {
-  "name": "rest-api",
+  "name": "@lattica/rest-api",
   "version": "0.0.1",
+  "private": true,
   "packageManager": "pnpm@10.30.2",
   "scripts": {
     "dev": "infisical run -- bun run --hot src/index.ts",

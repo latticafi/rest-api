@@ -31,7 +31,7 @@ export default function createApp() {
       {
         message: err.message,
 
-        stack: env === "production" ? undefined : err.stack,
+        stack: env === "prod" ? undefined : err.stack,
       },
       statusCode,
     );

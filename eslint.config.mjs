@@ -4,6 +4,7 @@ export default antfu(
   {
     type: "app",
     typescript: true,
+    jsonc: true,
     formatters: false,
     stylistic: false,
     ignores: ["**/migrations/*"],
