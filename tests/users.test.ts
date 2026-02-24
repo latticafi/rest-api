@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { cleanDb, mockVerifyAuthToken } from "./setup";
+import { cleanDb, createTestToken } from "./setup";
 
 import app from "@/app";
 import { db } from "@/db";
@@ -7,17 +7,16 @@ import { users } from "@/db/schema";
 
 // Helpers
 
-const AUTH_HEADER = { Authorization: "Bearer test-token" };
-
-function req(path: string, init?: RequestInit) {
+async function req(path: string, init?: RequestInit) {
+  const token = await createTestToken();
   const { headers, ...rest } = init ?? {};
   return app.request(path, {
     ...rest,
-    headers: { ...AUTH_HEADER, ...headers },
+    headers: { Authorization: `Bearer ${token}`, ...headers },
   });
 }
 
-function jsonReq(path: string, body: unknown, init?: RequestInit) {
+async function jsonReq(path: string, body: unknown, init?: RequestInit) {
   const { headers, method, ...rest } = init ?? {};
   return req(path, {
     method: method ?? "POST",
@@ -40,13 +39,6 @@ async function seedUser(data: {
 
 beforeEach(async () => {
   await cleanDb();
-  mockVerifyAuthToken.mockReset();
-  mockVerifyAuthToken.mockImplementation(() =>
-    Promise.resolve({
-      userId: "did:privy:test-user-123",
-      appId: "test-app-id",
-    }),
-  );
 });
 
 afterEach(async () => {
@@ -102,7 +94,7 @@ describe("POST /users", () => {
     expect(body.createdAt).toBeDefined();
   });
 
-  test("persists user to the database", async () => {
+  test("persists user with correct privyDid from token", async () => {
     await jsonReq("/users", { name: "Persisted", email: "persist@test.com" });
 
     const all = await db.select().from(users);

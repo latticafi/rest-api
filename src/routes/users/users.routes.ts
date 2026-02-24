@@ -94,14 +94,6 @@ export const getOne = createRoute({
       },
       description: "User not found",
     },
-    422: {
-      content: {
-        "application/json": {
-          schema: createErrorSchema(idParamsSchema),
-        },
-      },
-      description: "Invalid id error",
-    },
   },
 });
 

@@ -20,7 +20,10 @@ export async function authMiddleware(c: Context, next: Next) {
   const token = authHeader.slice(7);
 
   try {
-    const verifiedClaims = await privy.verifyAuthToken(token);
+    const verifiedClaims = await privy.verifyAuthToken(
+      token,
+      process.env.PRIVY_VERIFICATION_KEY,
+    );
     c.set("privyDid", verifiedClaims.userId);
     c.set("privyAppId", verifiedClaims.appId);
   } catch (error) {

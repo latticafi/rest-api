@@ -1,17 +1,10 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { cleanDb, mockVerifyAuthToken } from "./setup";
+import { cleanDb, createExpiredToken, createTestToken } from "./setup";
 
 import app from "@/app";
 
 beforeEach(async () => {
   await cleanDb();
-  mockVerifyAuthToken.mockReset();
-  mockVerifyAuthToken.mockImplementation(() =>
-    Promise.resolve({
-      userId: "did:privy:test-user-123",
-      appId: "test-app-id",
-    }),
-  );
 });
 
 afterEach(async () => {
@@ -34,13 +27,9 @@ describe("Auth Middleware", () => {
     expect(res.status).toBe(401);
   });
 
-  test("returns 401 when token verification fails", async () => {
-    mockVerifyAuthToken.mockImplementation(() =>
-      Promise.reject(new Error("Token expired")),
-    );
-
+  test("returns 401 with a garbage token", async () => {
     const res = await app.request("/users", {
-      headers: { Authorization: "Bearer expired-token" },
+      headers: { Authorization: "Bearer garbage.invalid.token" },
     });
     expect(res.status).toBe(401);
 
@@ -48,12 +37,19 @@ describe("Auth Middleware", () => {
     expect(body.message).toContain("Invalid or expired");
   });
 
-  test("passes through when token is valid", async () => {
+  test("returns 401 with an expired token", async () => {
+    const token = await createExpiredToken();
     const res = await app.request("/users", {
-      headers: { Authorization: "Bearer valid-token" },
+      headers: { Authorization: `Bearer ${token}` },
     });
+    expect(res.status).toBe(401);
+  });
 
+  test("passes through with a valid token", async () => {
+    const token = await createTestToken();
+    const res = await app.request("/users", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(200);
-    expect(mockVerifyAuthToken).toHaveBeenCalledTimes(1);
   });
 });
