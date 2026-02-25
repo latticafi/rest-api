@@ -1,6 +1,7 @@
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { logger } from "hono/logger";
 
 import type { AppBindings } from "@/lib/types";
 
@@ -11,6 +12,8 @@ export default function createApp() {
     strict: false,
     defaultHook,
   });
+
+  app.use(logger());
 
   app.notFound((context) => {
     return context.json(
