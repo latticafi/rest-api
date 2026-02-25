@@ -5,6 +5,7 @@ import type {
   CreateRoute,
   GetOneRoute,
   ListRoute,
+  MeRoute,
   PatchRoute,
 } from "@/routes/users/users.routes";
 
@@ -24,6 +25,20 @@ export const create: AppRouteHandler<CreateRoute> = async (c) => {
     .values({ name, email, privyDid })
     .returning();
   return c.json(newUser, 201);
+};
+
+export const me: AppRouteHandler<MeRoute> = async (c) => {
+  const privyDid = c.get("privyDid");
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.privyDid, privyDid));
+
+  if (!user) {
+    return c.json({ message: "Not Found" }, 404);
+  }
+
+  return c.json(user, 200);
 };
 
 export const getOne: AppRouteHandler<GetOneRoute> = async (c) => {

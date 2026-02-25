@@ -62,6 +62,30 @@ export const create = createRoute({
   },
 });
 
+export const me = createRoute({
+  operationId: "getCurrentUser",
+  path: "/users/me",
+  method: "get",
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: UserSelectSchema,
+        },
+      },
+      description: "The authenticated user",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: createMessageObjectSchema("Not Found"),
+        },
+      },
+      description: "User not found",
+    },
+  },
+});
+
 export const getOne = createRoute({
   operationId: "getUserById",
   path: `/users/{id}`,
@@ -151,5 +175,6 @@ export const patch = createRoute({
 
 export type ListRoute = typeof list;
 export type CreateRoute = typeof create;
+export type MeRoute = typeof me;
 export type GetOneRoute = typeof getOne;
 export type PatchRoute = typeof patch;
