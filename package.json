@@ -8,6 +8,7 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
     "db:generate": "infisical run -- drizzle-kit generate",
     "db:migrate": "infisical run -- drizzle-kit migrate",
     "db:push": "infisical run -- drizzle-kit push",
@@ -35,6 +36,7 @@
     "eslint": "^10.0.1",
     "husky": "^9.1.7",
     "jose": "^6.1.3",
-    "lint-staged": "^16.2.7"
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1"
   }
 }
