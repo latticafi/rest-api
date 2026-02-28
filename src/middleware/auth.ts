@@ -20,12 +20,9 @@ export async function authMiddleware(c: Context, next: Next) {
   const token = authHeader.slice(7);
 
   try {
-    const verifiedClaims = await privy.verifyAuthToken(
-      token,
-      process.env.PRIVY_VERIFICATION_KEY,
-    );
-    c.set("privyDid", verifiedClaims.userId);
-    c.set("privyAppId", verifiedClaims.appId);
+    const verifiedClaims = await privy.utils().auth().verifyAccessToken(token);
+    c.set("privyDid", verifiedClaims.user_id);
+    c.set("privyAppId", verifiedClaims.app_id);
   } catch (error) {
     console.error("Token verification failed", error);
     return c.json({ message: "Invalid or expired token" }, 401);
