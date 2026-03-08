@@ -22,4 +22,10 @@ export default antfu(
       ],
     },
   },
+  {
+    files: ["**/*.md"],
+    rules: {
+      "perfectionist/sort-imports": "off",
+    },
+  },
 );
