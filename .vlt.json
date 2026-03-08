@@ -1,0 +1,10 @@
+{
+  "addr": "https://vault.lattica.xyz",
+  "project": "rest-api",
+  "environments": {
+    "dev": "secret/data/dev/rest-api",
+    "staging": "secret/data/staging/rest-api",
+    "prod": "secret/data/prod/rest-api"
+  },
+  "default_env": "dev"
+}
