@@ -2,7 +2,7 @@
   "name": "@lattica/rest-api",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "vlt run -- bun run --hot src/index.ts",
     "lint": "eslint",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.2.2",
-    "@privy-io/node": "^0.10.1",
+    "@privy-io/node": "^0.11.0",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.12.7",
     "postgres": "^3.4.8",
