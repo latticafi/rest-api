@@ -5,7 +5,9 @@ import type {
   z,
 } from "@hono/zod-openapi";
 
-import type { AuthVariables } from "@/middleware/auth";
+export interface AuthVariables {
+  walletAddress: string;
+}
 
 export interface AppBindings {
   Variables: AuthVariables;
