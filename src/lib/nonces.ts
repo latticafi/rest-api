@@ -1,4 +1,4 @@
-const NONCE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const NONCE_TTL_MS = 5 * 60 * 1000;
 const CLEANUP_INTERVAL_MS = 60 * 1000;
 
 const store = new Map<string, number>();
@@ -11,7 +11,10 @@ setInterval(() => {
 }, CLEANUP_INTERVAL_MS);
 
 export function generateNonce(): string {
-  const nonce = crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  const nonce = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join(
+    "",
+  );
   store.set(nonce, Date.now() + NONCE_TTL_MS);
   return nonce;
 }
