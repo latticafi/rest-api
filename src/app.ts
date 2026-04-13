@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import configureOpenAPI from "@/lib/configureOpenAPI";
 import createApp from "@/lib/createApp";
 import { authMiddleware } from "@/middleware/auth";
+import authRouter from "@/routes/auth/auth.index";
 import usersRouter from "@/routes/users/users.index";
 
 const app = createApp();
@@ -17,6 +18,7 @@ app.use(
 );
 app.use("*", authMiddleware);
 
+app.route("/", authRouter);
 app.route("/", usersRouter);
 
 configureOpenAPI(app);

@@ -1,5 +1,5 @@
 {
-  "addr": "https://vault.lattica.xyz",
+  "addr": "https://vault.lattica.finance",
   "project": "rest-api",
   "environments": {
     "dev": "secret/data/dev/rest-api",
