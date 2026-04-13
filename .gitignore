@@ -30,3 +30,4 @@ lerna-debug.log*
 .DS_Store
 docs/
 digest.txt
+PLAN.md

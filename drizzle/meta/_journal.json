@@ -15,6 +15,13 @@
       "when": 1771808422720,
       "tag": "0001_loud_warbird",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776092211576,
+      "tag": "0002_milky_scorpion",
+      "breakpoints": true
     }
   ]
 }
