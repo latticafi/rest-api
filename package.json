@@ -9,7 +9,7 @@
     "lint:fix": "eslint --fix",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "db:generate": "vlt run -- drizzle-kit generate",
+    "db:generate": "drizzle-kit generate",
     "db:migrate": "vlt run -- drizzle-kit migrate",
     "db:push": "vlt run -- drizzle-kit push",
     "db:studio": "vlt run -- drizzle-kit studio",
