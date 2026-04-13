@@ -1,15 +1,15 @@
 import type { Context, Next } from "hono";
 
-import { privy } from "@/lib/privy";
+import { verifyJWT } from "@/lib/jwt";
 
-export interface AuthVariables {
-  privyDid: string;
-  privyAppId: string;
-}
+const PUBLIC_PREFIXES = ["/auth", "/doc", "/health"];
 
 export async function authMiddleware(c: Context, next: Next) {
-  const authHeader = c.req.header("Authorization");
+  if (PUBLIC_PREFIXES.some((p) => c.req.path.startsWith(p))) {
+    return next();
+  }
 
+  const authHeader = c.req.header("Authorization");
   if (!authHeader?.startsWith("Bearer ")) {
     return c.json(
       { message: "Missing or malformed Authorization header" },
@@ -17,14 +17,10 @@ export async function authMiddleware(c: Context, next: Next) {
     );
   }
 
-  const token = authHeader.slice(7);
-
   try {
-    const verifiedClaims = await privy.utils().auth().verifyAccessToken(token);
-    c.set("privyDid", verifiedClaims.user_id);
-    c.set("privyAppId", verifiedClaims.app_id);
-  } catch (error) {
-    console.error("Token verification failed", error);
+    const payload = await verifyJWT(authHeader.slice(7));
+    c.set("walletAddress", payload.sub);
+  } catch {
     return c.json({ message: "Invalid or expired token" }, 401);
   }
 
