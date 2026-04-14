@@ -2,10 +2,23 @@ import type { Context, Next } from "hono";
 
 import { verifyJWT } from "@/lib/jwt";
 
-const PUBLIC_PREFIXES = ["/auth", "/doc", "/health"];
+const PUBLIC_PATHS = ["/auth/", "/doc", "/health"];
+const PUBLIC_EXACT = ["/pool", "/pool/preview-liquidation"];
+
+const ADMIN_WALLETS = new Set(
+  (process.env.ADMIN_WALLETS || "")
+    .split(",")
+    .filter(Boolean)
+    .map((a) => a.toLowerCase()),
+);
 
 export async function authMiddleware(c: Context, next: Next) {
-  if (PUBLIC_PREFIXES.some((p) => c.req.path.startsWith(p))) {
+  const path = c.req.path;
+
+  if (
+    PUBLIC_PATHS.some((p) => path.startsWith(p)) ||
+    PUBLIC_EXACT.includes(path)
+  ) {
     return next();
   }
 
@@ -24,5 +37,13 @@ export async function authMiddleware(c: Context, next: Next) {
     return c.json({ message: "Invalid or expired token" }, 401);
   }
 
+  await next();
+}
+
+export async function adminMiddleware(c: Context, next: Next) {
+  const wallet = c.get("walletAddress");
+  if (!wallet || !ADMIN_WALLETS.has(wallet)) {
+    return c.json({ message: "Forbidden" }, 403);
+  }
   await next();
 }
