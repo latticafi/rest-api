@@ -4,6 +4,7 @@ import configureOpenAPI from "@/lib/configureOpenAPI";
 import createApp from "@/lib/createApp";
 import { authMiddleware } from "@/middleware/auth";
 import authRouter from "@/routes/auth/auth.index";
+import healthRouter from "@/routes/health";
 import poolRouter from "@/routes/pool/pool.index";
 import usersRouter from "@/routes/users/users.index";
 
@@ -19,6 +20,7 @@ app.use(
 );
 app.use("*", authMiddleware);
 
+app.route("/", healthRouter);
 app.route("/", authRouter);
 app.route("/", poolRouter);
 app.route("/", usersRouter);
