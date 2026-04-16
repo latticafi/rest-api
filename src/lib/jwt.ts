@@ -1,12 +1,12 @@
 import * as jose from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
-const JWT_ISSUER = "lattica";
-const JWT_EXPIRATION = "24h";
-
 if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET environment variable not set");
 }
+
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+const JWT_ISSUER = "lattica";
+const JWT_EXPIRATION = "24h";
 
 export interface JWTPayload {
   sub: string;
