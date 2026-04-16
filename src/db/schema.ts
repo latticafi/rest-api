@@ -17,15 +17,15 @@ export const users = pgTable("users", {
 
 export const markets = pgTable("markets", {
   conditionId: text("condition_id").primaryKey(),
-  tokenId: bigint("token_id", { mode: "bigint" }).notNull(),
+  tokenId: text("token_id").notNull(),
   minLtvBps: integer("min_ltv_bps").notNull(),
   maxLtvBps: integer("max_ltv_bps").notNull(),
-  resolutionTime: bigint("resolution_time", { mode: "bigint" })
+  resolutionTime: bigint("resolution_time", { mode: "number" })
     .notNull()
-    .default(BigInt(0)),
-  originationCutoff: bigint("origination_cutoff", { mode: "bigint" })
+    .default(0),
+  originationCutoff: bigint("origination_cutoff", { mode: "number" })
     .notNull()
-    .default(BigInt(0)),
+    .default(0),
   active: boolean("active").notNull().default(true),
   name: text("name"),
   description: text("description"),

@@ -53,11 +53,11 @@ export const onboardMarket: AppRouteHandler<OnboardMarketRoute> = async (c) => {
     .insert(markets)
     .values({
       conditionId: body.conditionId,
-      tokenId: BigInt(body.tokenId),
+      tokenId: body.tokenId,
       minLtvBps: body.minLtvBps,
       maxLtvBps: body.maxLtvBps,
-      resolutionTime: BigInt(body.resolutionTime),
-      originationCutoff: BigInt(body.originationCutoff),
+      resolutionTime: body.resolutionTime,
+      originationCutoff: body.originationCutoff,
       active: true,
     })
     .returning();
@@ -97,14 +97,8 @@ export const updateMarket: AppRouteHandler<UpdateMarketRoute> = async (c) => {
   const updated = {
     minLtvBps: body.minLtvBps ?? existing.minLtvBps,
     maxLtvBps: body.maxLtvBps ?? existing.maxLtvBps,
-    resolutionTime:
-      body.resolutionTime != null
-        ? BigInt(body.resolutionTime)
-        : existing.resolutionTime,
-    originationCutoff:
-      body.originationCutoff != null
-        ? BigInt(body.originationCutoff)
-        : existing.originationCutoff,
+    resolutionTime: body.resolutionTime ?? existing.resolutionTime,
+    originationCutoff: body.originationCutoff ?? existing.originationCutoff,
   };
 
   const operator = getOperatorClient();
@@ -117,11 +111,11 @@ export const updateMarket: AppRouteHandler<UpdateMarketRoute> = async (c) => {
     args: [
       conditionId as `0x${string}`,
       {
-        token_id: existing.tokenId,
+        token_id: BigInt(existing.tokenId),
         min_ltv_bps: BigInt(updated.minLtvBps),
         max_ltv_bps: BigInt(updated.maxLtvBps),
-        resolution_time: updated.resolutionTime,
-        origination_cutoff: updated.originationCutoff,
+        resolution_time: BigInt(updated.resolutionTime),
+        origination_cutoff: BigInt(updated.originationCutoff),
         active: existing.active,
       },
     ],
