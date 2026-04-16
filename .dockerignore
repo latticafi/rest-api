@@ -1,0 +1,8 @@
+node_modules
+.git
+.github
+.husky
+.env*
+drizzle
+tests
+*.md
