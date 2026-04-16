@@ -1,4 +1,11 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  bigint,
+  boolean,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -6,4 +13,24 @@ export const users = pgTable("users", {
   name: text("name"),
   email: text("email"),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const markets = pgTable("markets", {
+  conditionId: text("condition_id").primaryKey(),
+  tokenId: bigint("token_id", { mode: "bigint" }).notNull(),
+  minLtvBps: integer("min_ltv_bps").notNull(),
+  maxLtvBps: integer("max_ltv_bps").notNull(),
+  resolutionTime: bigint("resolution_time", { mode: "bigint" })
+    .notNull()
+    .default(BigInt(0)),
+  originationCutoff: bigint("origination_cutoff", { mode: "bigint" })
+    .notNull()
+    .default(BigInt(0)),
+  active: boolean("active").notNull().default(true),
+  name: text("name"),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  category: text("category"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
