@@ -1,0 +1,230 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  staging:
+    if: |
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+      && !startsWith(github.event.workflow_run.head_commit.message, 'chore'))
+      || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: hashicorp/vault-action@v3
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: jwt
+          role: rest-api-staging
+          jwtGithubAudience: https://github.com/latticafi
+          exportToken: true
+          secrets: |
+            secret/data/staging/ci HETZNER_HOST ;
+            secret/data/staging/ci HETZNER_SSH_KEY ;
+            secret/data/staging/ci GHCR_PAT ;
+            secret/data/staging/ci API_DOMAIN ;
+            secret/data/staging/rest-api DATABASE_URL ;
+            secret/data/staging/rest-api JWT_SECRET ;
+            secret/data/staging/rest-api SIWE_DOMAIN ;
+            secret/data/staging/rest-api RPC_URL ;
+            secret/data/staging/rest-api OPERATOR_PRIVATE_KEY ;
+            secret/data/staging/rest-api ORACLE_SIGNER_PRIVATE_KEY ;
+            secret/data/staging/rest-api CORS_ORIGIN ;
+            secret/data/staging/rest-api NODE_ENV ;
+            secret/data/staging/addresses POOL_ADDRESS ;
+            secret/data/staging/addresses CORE_ADDRESS ;
+            secret/data/staging/addresses VIEWS_ADDRESS ;
+            secret/data/staging/addresses ORACLE_ADDRESS ;
+            secret/data/staging/addresses CONTROLLER_ADDRESS ;
+            secret/data/staging/addresses RESERVE_ADDRESS ;
+            secret/data/staging/addresses CHAIN_ID
+
+      - name: deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
+          ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
+            GHCR_PAT="${GHCR_PAT}" \
+            API_DOMAIN="${API_DOMAIN}" \
+            DATABASE_URL="${DATABASE_URL}" \
+            JWT_SECRET="${JWT_SECRET}" \
+            SIWE_DOMAIN="${SIWE_DOMAIN}" \
+            RPC_URL="${RPC_URL}" \
+            OPERATOR_PRIVATE_KEY="${OPERATOR_PRIVATE_KEY}" \
+            ORACLE_SIGNER_PRIVATE_KEY="${ORACLE_SIGNER_PRIVATE_KEY}" \
+            CORS_ORIGIN="${CORS_ORIGIN}" \
+            NODE_ENV="${NODE_ENV}" \
+            POOL_ADDRESS="${POOL_ADDRESS}" \
+            CORE_ADDRESS="${CORE_ADDRESS}" \
+            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
+            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
+            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
+            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
+            CHAIN_ID="${CHAIN_ID}" \
+            bash -s <<'REMOTE'
+              echo "${GHCR_PAT}" | docker login ghcr.io -u latticafi --password-stdin
+
+              printf '%s\n' \
+                "DATABASE_URL=${DATABASE_URL}" \
+                "JWT_SECRET=${JWT_SECRET}" \
+                "SIWE_DOMAIN=${SIWE_DOMAIN}" \
+                "RPC_URL=${RPC_URL}" \
+                "OPERATOR_PRIVATE_KEY=${OPERATOR_PRIVATE_KEY}" \
+                "ORACLE_SIGNER_PRIVATE_KEY=${ORACLE_SIGNER_PRIVATE_KEY}" \
+                "CORS_ORIGIN=${CORS_ORIGIN}" \
+                "NODE_ENV=${NODE_ENV}" \
+                "POOL_ADDRESS=${POOL_ADDRESS}" \
+                "CORE_ADDRESS=${CORE_ADDRESS}" \
+                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
+                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
+                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
+                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
+                "CHAIN_ID=${CHAIN_ID}" \
+                > /opt/lattica/env/rest-api.env
+              chmod 600 /opt/lattica/env/rest-api.env
+
+              cat > /opt/infra/conf.d/rest-api.caddy <<CADDY
+          ${API_DOMAIN} {
+            reverse_proxy rest-api:3000
+          }
+          CADDY
+
+              cd /opt/infra
+              docker compose --profile app pull rest-api
+              docker compose --profile app up -d rest-api
+              docker exec caddy caddy reload --config /etc/caddy/Caddyfile
+
+              sleep 5
+              docker exec rest-api curl -sf http://localhost:3000/health \
+                || { echo "DEPLOY FAILED"; docker compose --profile app logs rest-api; exit 1; }
+          REMOTE
+
+          rm -f ~/.ssh/key
+
+      - name: revoke token
+        if: always()
+        run: |
+          curl -sS -X POST \
+            -H "X-Vault-Token: ${VAULT_TOKEN}" \
+            "${{ secrets.VAULT_ADDR }}/v1/auth/token/revoke-self" || true
+
+  prod:
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: hashicorp/vault-action@v3
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          method: jwt
+          role: rest-api-prod
+          jwtGithubAudience: https://github.com/latticafi
+          exportToken: true
+          secrets: |
+            secret/data/prod/ci HETZNER_HOST ;
+            secret/data/prod/ci HETZNER_SSH_KEY ;
+            secret/data/prod/ci GHCR_PAT ;
+            secret/data/prod/ci API_DOMAIN ;
+            secret/data/prod/rest-api DATABASE_URL ;
+            secret/data/prod/rest-api JWT_SECRET ;
+            secret/data/prod/rest-api SIWE_DOMAIN ;
+            secret/data/prod/rest-api RPC_URL ;
+            secret/data/prod/rest-api OPERATOR_PRIVATE_KEY ;
+            secret/data/prod/rest-api ORACLE_SIGNER_PRIVATE_KEY ;
+            secret/data/prod/rest-api CORS_ORIGIN ;
+            secret/data/prod/rest-api NODE_ENV ;
+            secret/data/prod/addresses POOL_ADDRESS ;
+            secret/data/prod/addresses CORE_ADDRESS ;
+            secret/data/prod/addresses VIEWS_ADDRESS ;
+            secret/data/prod/addresses ORACLE_ADDRESS ;
+            secret/data/prod/addresses CONTROLLER_ADDRESS ;
+            secret/data/prod/addresses RESERVE_ADDRESS ;
+            secret/data/prod/addresses CHAIN_ID
+
+      - name: deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
+          ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
+            GHCR_PAT="${GHCR_PAT}" \
+            API_DOMAIN="${API_DOMAIN}" \
+            DATABASE_URL="${DATABASE_URL}" \
+            JWT_SECRET="${JWT_SECRET}" \
+            SIWE_DOMAIN="${SIWE_DOMAIN}" \
+            RPC_URL="${RPC_URL}" \
+            OPERATOR_PRIVATE_KEY="${OPERATOR_PRIVATE_KEY}" \
+            ORACLE_SIGNER_PRIVATE_KEY="${ORACLE_SIGNER_PRIVATE_KEY}" \
+            CORS_ORIGIN="${CORS_ORIGIN}" \
+            NODE_ENV="${NODE_ENV}" \
+            POOL_ADDRESS="${POOL_ADDRESS}" \
+            CORE_ADDRESS="${CORE_ADDRESS}" \
+            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
+            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
+            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
+            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
+            CHAIN_ID="${CHAIN_ID}" \
+            bash -s <<'REMOTE'
+              echo "${GHCR_PAT}" | docker login ghcr.io -u latticafi --password-stdin
+
+              printf '%s\n' \
+                "DATABASE_URL=${DATABASE_URL}" \
+                "JWT_SECRET=${JWT_SECRET}" \
+                "SIWE_DOMAIN=${SIWE_DOMAIN}" \
+                "RPC_URL=${RPC_URL}" \
+                "OPERATOR_PRIVATE_KEY=${OPERATOR_PRIVATE_KEY}" \
+                "ORACLE_SIGNER_PRIVATE_KEY=${ORACLE_SIGNER_PRIVATE_KEY}" \
+                "CORS_ORIGIN=${CORS_ORIGIN}" \
+                "NODE_ENV=${NODE_ENV}" \
+                "POOL_ADDRESS=${POOL_ADDRESS}" \
+                "CORE_ADDRESS=${CORE_ADDRESS}" \
+                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
+                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
+                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
+                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
+                "CHAIN_ID=${CHAIN_ID}" \
+                > /opt/lattica/env/rest-api.env
+              chmod 600 /opt/lattica/env/rest-api.env
+
+              cat > /opt/infra/conf.d/rest-api.caddy <<CADDY
+          ${API_DOMAIN} {
+            reverse_proxy rest-api:3000
+          }
+          CADDY
+
+              cd /opt/infra
+              docker compose --profile app pull rest-api
+              docker compose --profile app up -d rest-api
+              docker exec caddy caddy reload --config /etc/caddy/Caddyfile
+
+              sleep 5
+              docker exec rest-api curl -sf http://localhost:3000/health \
+                || { echo "DEPLOY FAILED"; docker compose --profile app logs rest-api; exit 1; }
+          REMOTE
+
+          rm -f ~/.ssh/key
+
+      - name: revoke token
+        if: always()
+        run: |
+          curl -sS -X POST \
+            -H "X-Vault-Token: ${VAULT_TOKEN}" \
+            "${{ secrets.VAULT_ADDR }}/v1/auth/token/revoke-self" || true
