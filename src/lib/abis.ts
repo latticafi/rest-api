@@ -46,3 +46,51 @@ export const viewsAbi = [
     outputs: [{ name: "", type: "uint256" }],
   },
 ] as const;
+
+export const poolCoreAbi = [
+  {
+    name: "set_market",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "condition_id", type: "bytes32" },
+      {
+        name: "params",
+        type: "tuple",
+        components: [
+          { name: "token_id", type: "uint256" },
+          { name: "min_ltv_bps", type: "uint256" },
+          { name: "max_ltv_bps", type: "uint256" },
+          { name: "resolution_time", type: "uint256" },
+          { name: "origination_cutoff", type: "uint256" },
+          { name: "active", type: "bool" },
+        ],
+      },
+    ],
+    outputs: [],
+  },
+  {
+    name: "pause_market",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "condition_id", type: "bytes32" }],
+    outputs: [],
+  },
+] as const;
+
+export const lendingPoolAbi = [
+  {
+    name: "pause",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    name: "unpause",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+] as const;

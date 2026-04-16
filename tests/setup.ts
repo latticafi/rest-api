@@ -3,7 +3,7 @@ import { privateKeyToAccount } from "viem/accounts";
 import { createSiweMessage } from "viem/siwe";
 
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { markets, users } from "@/db/schema";
 
 spyOn(console, "error").mockImplementation(() => {});
 
@@ -16,9 +16,16 @@ export const TEST_PK =
 export const testAccount = privateKeyToAccount(TEST_PK);
 export const TEST_ADDRESS = testAccount.address.toLowerCase();
 
-export async function createSiwePayload(nonce: string) {
+export const NON_ADMIN_PK =
+  "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d";
+export const nonAdminAccount = privateKeyToAccount(NON_ADMIN_PK);
+export const NON_ADMIN_ADDRESS = nonAdminAccount.address.toLowerCase();
+
+process.env.ADMIN_WALLETS = TEST_ADDRESS;
+
+export async function createSiwePayload(nonce: string, account = testAccount) {
   const message = createSiweMessage({
-    address: testAccount.address,
+    address: account.address,
     chainId: 137,
     domain: "localhost",
     nonce,
@@ -26,14 +33,17 @@ export async function createSiwePayload(nonce: string) {
     version: "1",
   });
 
-  const signature = await testAccount.signMessage({ message });
+  const signature = await account.signMessage({ message });
   return { message, signature };
 }
 
-export async function getAuthToken(app: any): Promise<string> {
+export async function getAuthToken(
+  app: any,
+  account = testAccount,
+): Promise<string> {
   const nonceRes = await app.request("/auth/nonce");
   const { nonce } = (await nonceRes.json()) as { nonce: string };
-  const { message, signature } = await createSiwePayload(nonce);
+  const { message, signature } = await createSiwePayload(nonce, account);
 
   const verifyRes = await app.request("/auth/verify", {
     method: "POST",
@@ -46,5 +56,6 @@ export async function getAuthToken(app: any): Promise<string> {
 }
 
 export async function cleanDb() {
+  await db.delete(markets);
   await db.delete(users);
 }

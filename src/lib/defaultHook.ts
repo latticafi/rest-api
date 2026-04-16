@@ -2,7 +2,7 @@ import type { Hook } from "@hono/zod-openapi";
 
 import type { AppBindings } from "@/lib/types";
 
-const PARAM_FIELDS = new Set(["id"]);
+const PARAM_FIELDS = new Set(["id", "conditionId"]);
 
 export const defaultHook: Hook<any, AppBindings, any, any> = (result, c) => {
   if (!result.success) {
