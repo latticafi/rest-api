@@ -9,6 +9,8 @@ const PRECISION = 10_000;
 export interface AtRiskLoan {
   loanId: number;
   conditionId: string;
+  tokenId: string;
+  collateralAmount: string;
   liquidationPrice: string;
   epochEnd: number;
   reason: "undercollateralized" | "expired";
@@ -30,6 +32,8 @@ export async function scanActiveLoans(): Promise<AtRiskLoan[]> {
       atRisk.push({
         loanId: loan.loanId,
         conditionId: loan.conditionId,
+        tokenId: loan.tokenId,
+        collateralAmount: loan.collateralAmount,
         liquidationPrice: loan.liquidationPrice,
         epochEnd: loan.epochEnd,
         reason: "expired",
@@ -52,6 +56,8 @@ export async function scanActiveLoans(): Promise<AtRiskLoan[]> {
       atRisk.push({
         loanId: loan.loanId,
         conditionId: loan.conditionId,
+        tokenId: loan.tokenId,
+        collateralAmount: loan.collateralAmount,
         liquidationPrice: loan.liquidationPrice,
         epochEnd: loan.epochEnd,
         reason: "undercollateralized",

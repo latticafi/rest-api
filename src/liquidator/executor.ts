@@ -6,6 +6,8 @@ import { getMidPrice } from "@/pricefeed";
 
 import type { AtRiskLoan } from "./scanner";
 
+import { sellCollateral } from "./seller";
+
 const PRICE_ATTESTATION_TTL_S = 120;
 
 export async function executeLiquidation(
@@ -27,6 +29,12 @@ export async function executeLiquidation(
 
       await client.waitForTransactionReceipt({ hash });
       console.log(`[liquidator] Claimed expired loan ${loan.loanId}: ${hash}`);
+
+      await sellCollateral(
+        loan.tokenId,
+        loan.collateralAmount,
+        loan.conditionId,
+      );
       return hash;
     }
 
@@ -68,6 +76,8 @@ export async function executeLiquidation(
     console.log(
       `[liquidator] Liquidated loan ${loan.loanId} (HF=${loan.healthFactor}): ${hash}`,
     );
+
+    await sellCollateral(loan.tokenId, loan.collateralAmount, loan.conditionId);
     return hash;
   } catch (err) {
     console.error(`[liquidator] Failed loan ${loan.loanId}:`, err);
