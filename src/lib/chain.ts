@@ -9,7 +9,9 @@ type ContractName =
   | "views"
   | "oracle"
   | "controller"
-  | "reserve";
+  | "reserve"
+  | "usdc"
+  | "ctf";
 
 const ENV_MAP: Record<ContractName, string> = {
   pool: "POOL_ADDRESS",
@@ -18,6 +20,8 @@ const ENV_MAP: Record<ContractName, string> = {
   oracle: "ORACLE_ADDRESS",
   controller: "CONTROLLER_ADDRESS",
   reserve: "RESERVE_ADDRESS",
+  usdc: "USDC_ADDRESS",
+  ctf: "CTF_ADDRESS",
 };
 
 let _client: PublicClient | null = null;
