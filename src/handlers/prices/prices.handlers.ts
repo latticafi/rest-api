@@ -1,7 +1,7 @@
 import type { AppRouteHandler } from "@/lib/types";
 import type { GetPriceRoute } from "@/routes/prices/prices.routes";
 
-import { getMidPrice } from "@/lib/priceFeed";
+import { getMidPrice } from "@/pricefeed";
 
 export const getPrice: AppRouteHandler<GetPriceRoute> = async (c) => {
   const { conditionId } = c.req.valid("param");

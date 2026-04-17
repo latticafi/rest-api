@@ -6,8 +6,8 @@ import type { RequestQuoteRoute } from "@/routes/quotes/quotes.routes";
 import { db } from "@/db";
 import { markets } from "@/db/schema";
 import { getContract } from "@/lib/chain";
-import { getMidPrice } from "@/lib/priceFeed";
 import { signPriceAttestation } from "@/lib/priceSigner";
+import { getMidPrice } from "@/pricefeed";
 
 const QUOTE_ENGINE_URL =
   process.env.QUOTE_ENGINE_URL || "http://quote-api:8000";
