@@ -42,6 +42,9 @@ jobs:
             secret/data/staging/rest-api CORS_ORIGIN ;
             secret/data/staging/rest-api NODE_ENV ;
             secret/data/staging/rest-api CLOB_WSS_URL ;
+            secret/data/staging/rest-api CLOB_API_KEY ;
+            secret/data/staging/rest-api CLOB_API_SECRET ;
+            secret/data/staging/rest-api CLOB_PASSPHRASE ;
             secret/data/staging/rest-api QUOTE_ENGINE_URL ;
             secret/data/staging/addresses CHAIN_ID ;
             secret/data/staging/addresses CONTROLLER_ADDRESS ;
@@ -72,6 +75,9 @@ jobs:
             CORS_ORIGIN="${CORS_ORIGIN}" \
             NODE_ENV="${NODE_ENV}" \
             CLOB_WSS_URL="${CLOB_WSS_URL}" \
+            CLOB_API_KEY="${CLOB_API_KEY}" \
+            CLOB_API_SECRET="${CLOB_API_SECRET}" \
+            CLOB_PASSPHRASE="${CLOB_PASSPHRASE}" \
             QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
             CHAIN_ID="${CHAIN_ID}" \
             CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
@@ -95,6 +101,9 @@ jobs:
                 "CORS_ORIGIN=${CORS_ORIGIN}" \
                 "NODE_ENV=${NODE_ENV}" \
                 "CLOB_WSS_URL=${CLOB_WSS_URL}" \
+                "CLOB_API_KEY=${CLOB_API_KEY}" \
+                "CLOB_API_SECRET=${CLOB_API_SECRET}" \
+                "CLOB_PASSPHRASE=${CLOB_PASSPHRASE}" \
                 "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
                 "CHAIN_ID=${CHAIN_ID}" \
                 "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
@@ -162,6 +171,9 @@ jobs:
             secret/data/prod/rest-api CORS_ORIGIN ;
             secret/data/prod/rest-api NODE_ENV ;
             secret/data/prod/rest-api CLOB_WSS_URL ;
+            secret/data/prod/rest-api CLOB_API_KEY ;
+            secret/data/prod/rest-api CLOB_API_SECRET ;
+            secret/data/prod/rest-api CLOB_PASSPHRASE ;
             secret/data/prod/rest-api QUOTE_ENGINE_URL ;
             secret/data/prod/addresses CHAIN_ID ;
             secret/data/prod/addresses CONTROLLER_ADDRESS ;
@@ -192,6 +204,9 @@ jobs:
             CORS_ORIGIN="${CORS_ORIGIN}" \
             NODE_ENV="${NODE_ENV}" \
             CLOB_WSS_URL="${CLOB_WSS_URL}" \
+            CLOB_API_KEY="${CLOB_API_KEY}" \
+            CLOB_API_SECRET="${CLOB_API_SECRET}" \
+            CLOB_PASSPHRASE="${CLOB_PASSPHRASE}" \
             QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
             CHAIN_ID="${CHAIN_ID}" \
             CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
@@ -215,6 +230,9 @@ jobs:
                 "CORS_ORIGIN=${CORS_ORIGIN}" \
                 "NODE_ENV=${NODE_ENV}" \
                 "CLOB_WSS_URL=${CLOB_WSS_URL}" \
+                "CLOB_API_KEY=${CLOB_API_KEY}" \
+                "CLOB_API_SECRET=${CLOB_API_SECRET}" \
+                "CLOB_PASSPHRASE=${CLOB_PASSPHRASE}" \
                 "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
                 "CHAIN_ID=${CHAIN_ID}" \
                 "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \

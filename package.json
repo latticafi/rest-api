@@ -21,7 +21,10 @@
   },
   "dependencies": {
     "@hono/zod-openapi": "^1.3.0",
+    "@polymarket/builder-signing-sdk": "^1.0.0",
+    "@polymarket/clob-client": "^5.8.1",
     "drizzle-orm": "^0.45.2",
+    "ethers": "^5.8.0",
     "hono": "^4.12.14",
     "jose": "^6.2.2",
     "postgres": "^3.4.9",

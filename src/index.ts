@@ -1,5 +1,6 @@
 import app from "./app";
 import { startIndexer } from "./indexer";
+import { startLiquidator } from "./liquidator";
 import { startPriceFeed } from "./pricefeed";
 
 const port = Number(process.env.PORT || 3000);
@@ -10,6 +11,7 @@ startPriceFeed().catch((err) => {
 });
 
 startIndexer();
+startLiquidator();
 
 Bun.serve({
   port,
