@@ -11,7 +11,7 @@ import {
 } from "./connection";
 import { clearAssets, registerAsset } from "./dispatch";
 
-export { getAllPrices, getMidPrice } from "./store";
+export { clearPrices, getAllPrices, getMidPrice } from "./store";
 export type { PriceData } from "./store";
 
 async function loadMarketAssets(): Promise<string[]> {

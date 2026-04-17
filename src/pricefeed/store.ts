@@ -20,6 +20,10 @@ export function getAllPrices(): Map<string, PriceData> {
   return prices;
 }
 
+export function clearPrices() {
+  prices.clear();
+}
+
 export function updatePrice(conditionId: string, bid: number, ask: number) {
   if (bid <= 0 || ask <= bid) return;
   prices.set(conditionId, {
