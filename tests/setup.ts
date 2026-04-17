@@ -3,7 +3,14 @@ import { privateKeyToAccount } from "viem/accounts";
 import { createSiweMessage } from "viem/siwe";
 
 import { db } from "@/db";
-import { markets, users } from "@/db/schema";
+import {
+  depositEvents,
+  indexerCursor,
+  loans,
+  markets,
+  users,
+  withdrawEvents,
+} from "@/db/schema";
 
 spyOn(console, "error").mockImplementation(() => {});
 
@@ -56,6 +63,10 @@ export async function getAuthToken(
 }
 
 export async function cleanDb() {
+  await db.delete(depositEvents);
+  await db.delete(withdrawEvents);
+  await db.delete(loans);
+  await db.delete(indexerCursor);
   await db.delete(markets);
   await db.delete(users);
 }
