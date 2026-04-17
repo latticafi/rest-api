@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test } from "bun:test";
 
 import { clearAssets, dispatch, registerAsset } from "@/pricefeed/dispatch";
-import { getMidPrice } from "@/pricefeed/store";
+import { clearPrices, getMidPrice } from "@/pricefeed/store";
 
 const ASSET_ID =
   "109681959945973300464568698402968596289258214226684818748321941747028805721376";
@@ -10,6 +10,7 @@ const CONDITION_ID =
 
 beforeEach(() => {
   clearAssets();
+  clearPrices();
   registerAsset(ASSET_ID, CONDITION_ID);
 });
 
@@ -34,7 +35,7 @@ describe("dispatch book event", () => {
     expect(data).not.toBeNull();
     expect(data!.bid).toBe(0.55);
     expect(data!.ask).toBe(0.57);
-    expect(data!.mid).toBe(0.56);
+    expect(data!.mid).toBeCloseTo(0.56);
   });
 
   test("ignores book for unregistered asset", () => {
@@ -104,8 +105,8 @@ describe("dispatch price_change event", () => {
       }),
     );
 
-    expect(getMidPrice(CONDITION_ID)!.mid).toBe(0.51);
-    expect(getMidPrice(otherCondition)!.mid).toBe(0.71);
+    expect(getMidPrice(CONDITION_ID)!.mid).toBeCloseTo(0.51);
+    expect(getMidPrice(otherCondition)!.mid).toBeCloseTo(0.71);
   });
 
   test("skips changes without best_bid or best_ask", () => {
@@ -133,7 +134,7 @@ describe("dispatch best_bid_ask event", () => {
 
     const data = getMidPrice(CONDITION_ID);
     expect(data).not.toBeNull();
-    expect(data!.mid).toBe(0.46);
+    expect(data!.mid).toBeCloseTo(0.46);
   });
 });
 

@@ -1,6 +1,15 @@
-import { describe, expect, test } from "bun:test";
+import { beforeEach, describe, expect, test } from "bun:test";
 
-import { getAllPrices, getMidPrice, updatePrice } from "@/pricefeed/store";
+import {
+  clearPrices,
+  getAllPrices,
+  getMidPrice,
+  updatePrice,
+} from "@/pricefeed/store";
+
+beforeEach(() => {
+  clearPrices();
+});
 
 describe("pricefeed store", () => {
   test("updatePrice stores bid/ask/mid", () => {

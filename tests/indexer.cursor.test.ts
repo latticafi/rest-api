@@ -1,13 +1,27 @@
-import { afterEach, describe, expect, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, mock, test } from "bun:test";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { indexerCursor } from "@/db/schema";
-import { getCursor, setCursor } from "@/indexer/cursor";
+
+const MOCK_HEAD = 60000000n;
+
+mock.module("@/lib/chain", () => ({
+  getPublicClient: () => ({
+    getBlockNumber: async () => MOCK_HEAD,
+  }),
+  getContract: () => "0x0000000000000000000000000000000000000001",
+}));
+
+const { getCursor, setCursor } = await import("@/indexer/cursor");
 
 async function cleanCursor() {
   await db.delete(indexerCursor);
 }
+
+beforeEach(async () => {
+  await cleanCursor();
+});
 
 afterEach(async () => {
   await cleanCursor();
@@ -15,16 +29,15 @@ afterEach(async () => {
 
 describe("indexer cursor", () => {
   test("getCursor seeds from chain head on first call", async () => {
-    process.env.RPC_URL = process.env.RPC_URL || "https://polygon-rpc.com";
     const cursor = await getCursor();
-    expect(cursor).toBeGreaterThan(0n);
+    expect(cursor).toBe(MOCK_HEAD);
 
     const [row] = await db
       .select()
       .from(indexerCursor)
       .where(eq(indexerCursor.id, 1));
     expect(row).toBeDefined();
-    expect(BigInt(row.lastBlock)).toBe(cursor);
+    expect(BigInt(row.lastBlock)).toBe(MOCK_HEAD);
   });
 
   test("getCursor returns existing cursor", async () => {
