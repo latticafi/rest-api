@@ -8,6 +8,8 @@ import authRouter from "@/routes/auth/auth.index";
 import healthRouter from "@/routes/health";
 import marketsRouter from "@/routes/markets/markets.index";
 import poolRouter from "@/routes/pool/pool.index";
+import pricesRouter from "@/routes/prices/prices.index";
+import quotesRouter from "@/routes/quotes/quotes.index";
 import usersRouter from "@/routes/users/users.index";
 
 const app = createApp();
@@ -28,6 +30,8 @@ app.route("/", authRouter);
 app.route("/", adminRouter);
 app.route("/", marketsRouter);
 app.route("/", poolRouter);
+app.route("/", pricesRouter);
+app.route("/", quotesRouter);
 app.route("/", usersRouter);
 
 configureOpenAPI(app);
