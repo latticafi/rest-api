@@ -43,13 +43,15 @@ jobs:
             secret/data/staging/rest-api NODE_ENV ;
             secret/data/staging/rest-api CLOB_WSS_URL ;
             secret/data/staging/rest-api QUOTE_ENGINE_URL ;
-            secret/data/staging/addresses POOL_ADDRESS ;
-            secret/data/staging/addresses CORE_ADDRESS ;
-            secret/data/staging/addresses VIEWS_ADDRESS ;
-            secret/data/staging/addresses ORACLE_ADDRESS ;
+            secret/data/staging/addresses CHAIN_ID ;
             secret/data/staging/addresses CONTROLLER_ADDRESS ;
+            secret/data/staging/addresses CORE_ADDRESS ;
+            secret/data/staging/addresses CTF_ADDRESS ;
+            secret/data/staging/addresses ORACLE_ADDRESS ;
+            secret/data/staging/addresses POOL_ADDRESS ;
             secret/data/staging/addresses RESERVE_ADDRESS ;
-            secret/data/staging/addresses CHAIN_ID
+            secret/data/staging/addresses USDC_ADDRESS ;
+            secret/data/staging/addresses VIEWS_ADDRESS
 
       - name: deploy
         run: |
@@ -71,13 +73,15 @@ jobs:
             NODE_ENV="${NODE_ENV}" \
             CLOB_WSS_URL="${CLOB_WSS_URL}" \
             QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
-            POOL_ADDRESS="${POOL_ADDRESS}" \
-            CORE_ADDRESS="${CORE_ADDRESS}" \
-            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
-            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
-            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
-            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
             CHAIN_ID="${CHAIN_ID}" \
+            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
+            CORE_ADDRESS="${CORE_ADDRESS}" \
+            CTF_ADDRESS="${CTF_ADDRESS}" \
+            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
+            POOL_ADDRESS="${POOL_ADDRESS}" \
+            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
+            USDC_ADDRESS="${USDC_ADDRESS}" \
+            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
             bash -s <<'REMOTE'
               echo "${GHCR_PAT}" | docker login ghcr.io -u latticafi --password-stdin
 
@@ -92,13 +96,15 @@ jobs:
                 "NODE_ENV=${NODE_ENV}" \
                 "CLOB_WSS_URL=${CLOB_WSS_URL}" \
                 "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
-                "POOL_ADDRESS=${POOL_ADDRESS}" \
-                "CORE_ADDRESS=${CORE_ADDRESS}" \
-                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
-                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
-                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
-                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
                 "CHAIN_ID=${CHAIN_ID}" \
+                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
+                "CORE_ADDRESS=${CORE_ADDRESS}" \
+                "CTF_ADDRESS=${CTF_ADDRESS}" \
+                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
+                "POOL_ADDRESS=${POOL_ADDRESS}" \
+                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
+                "USDC_ADDRESS=${USDC_ADDRESS}" \
+                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
                 > /opt/lattica/env/rest-api.env
               chmod 600 /opt/lattica/env/rest-api.env
 
@@ -157,13 +163,15 @@ jobs:
             secret/data/prod/rest-api NODE_ENV ;
             secret/data/prod/rest-api CLOB_WSS_URL ;
             secret/data/prod/rest-api QUOTE_ENGINE_URL ;
-            secret/data/prod/addresses POOL_ADDRESS ;
-            secret/data/prod/addresses CORE_ADDRESS ;
-            secret/data/prod/addresses VIEWS_ADDRESS ;
-            secret/data/prod/addresses ORACLE_ADDRESS ;
+            secret/data/prod/addresses CHAIN_ID ;
             secret/data/prod/addresses CONTROLLER_ADDRESS ;
+            secret/data/prod/addresses CORE_ADDRESS ;
+            secret/data/prod/addresses CTF_ADDRESS ;
+            secret/data/prod/addresses ORACLE_ADDRESS ;
+            secret/data/prod/addresses POOL_ADDRESS ;
             secret/data/prod/addresses RESERVE_ADDRESS ;
-            secret/data/prod/addresses CHAIN_ID
+            secret/data/prod/addresses USDC_ADDRESS ;
+            secret/data/prod/addresses VIEWS_ADDRESS
 
       - name: deploy
         run: |
@@ -185,13 +193,15 @@ jobs:
             NODE_ENV="${NODE_ENV}" \
             CLOB_WSS_URL="${CLOB_WSS_URL}" \
             QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
-            POOL_ADDRESS="${POOL_ADDRESS}" \
-            CORE_ADDRESS="${CORE_ADDRESS}" \
-            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
-            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
-            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
-            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
             CHAIN_ID="${CHAIN_ID}" \
+            CONTROLLER_ADDRESS="${CONTROLLER_ADDRESS}" \
+            CORE_ADDRESS="${CORE_ADDRESS}" \
+            CTF_ADDRESS="${CTF_ADDRESS}" \
+            ORACLE_ADDRESS="${ORACLE_ADDRESS}" \
+            POOL_ADDRESS="${POOL_ADDRESS}" \
+            RESERVE_ADDRESS="${RESERVE_ADDRESS}" \
+            USDC_ADDRESS="${USDC_ADDRESS}" \
+            VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
             bash -s <<'REMOTE'
               echo "${GHCR_PAT}" | docker login ghcr.io -u latticafi --password-stdin
 
@@ -206,13 +216,15 @@ jobs:
                 "NODE_ENV=${NODE_ENV}" \
                 "CLOB_WSS_URL=${CLOB_WSS_URL}" \
                 "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
-                "POOL_ADDRESS=${POOL_ADDRESS}" \
-                "CORE_ADDRESS=${CORE_ADDRESS}" \
-                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
-                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
-                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
-                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
                 "CHAIN_ID=${CHAIN_ID}" \
+                "CONTROLLER_ADDRESS=${CONTROLLER_ADDRESS}" \
+                "CORE_ADDRESS=${CORE_ADDRESS}" \
+                "CTF_ADDRESS=${CTF_ADDRESS}" \
+                "ORACLE_ADDRESS=${ORACLE_ADDRESS}" \
+                "POOL_ADDRESS=${POOL_ADDRESS}" \
+                "RESERVE_ADDRESS=${RESERVE_ADDRESS}" \
+                "USDC_ADDRESS=${USDC_ADDRESS}" \
+                "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
                 > /opt/lattica/env/rest-api.env
               chmod 600 /opt/lattica/env/rest-api.env
 
