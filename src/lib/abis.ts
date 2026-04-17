@@ -103,6 +103,16 @@ export const poolCoreAbi = [
       },
     ],
   },
+  {
+    name: "health_factor",
+    type: "function",
+    stateMutability: "view",
+    inputs: [
+      { name: "loan_id", type: "uint256" },
+      { name: "price", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "uint256" }],
+  },
 ] as const;
 
 export const lendingPoolAbi = [
@@ -177,6 +187,26 @@ export const lendingPoolAbi = [
     type: "function",
     stateMutability: "nonpayable",
     inputs: [],
+    outputs: [],
+  },
+  {
+    name: "trigger_liquidation",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "loan_id", type: "uint256" },
+      { name: "price", type: "uint256" },
+      { name: "price_timestamp", type: "uint256" },
+      { name: "price_deadline", type: "uint256" },
+      { name: "price_signature", type: "bytes" },
+    ],
+    outputs: [],
+  },
+  {
+    name: "claim_expired",
+    type: "function",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "loan_id", type: "uint256" }],
     outputs: [],
   },
   {

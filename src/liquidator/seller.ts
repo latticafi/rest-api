@@ -1,8 +1,8 @@
 import type { ApiKeyCreds } from "@polymarket/clob-client";
 
-import { Wallet } from "@ethersproject/wallet";
 import { BuilderConfig } from "@polymarket/builder-signing-sdk";
 import { ClobClient, OrderType, Side } from "@polymarket/clob-client";
+import { Wallet } from "ethers";
 
 const CLOB_HOST = process.env.CLOB_HOST || "https://clob.polymarket.com";
 const GAMMA_API = "https://gamma-api.polymarket.com";
