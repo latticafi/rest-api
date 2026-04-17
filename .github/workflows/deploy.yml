@@ -41,6 +41,8 @@ jobs:
             secret/data/staging/rest-api ORACLE_SIGNER_PRIVATE_KEY ;
             secret/data/staging/rest-api CORS_ORIGIN ;
             secret/data/staging/rest-api NODE_ENV ;
+            secret/data/staging/rest-api CLOB_WSS_URL ;
+            secret/data/staging/rest-api QUOTE_ENGINE_URL ;
             secret/data/staging/addresses POOL_ADDRESS ;
             secret/data/staging/addresses CORE_ADDRESS ;
             secret/data/staging/addresses VIEWS_ADDRESS ;
@@ -67,6 +69,8 @@ jobs:
             ORACLE_SIGNER_PRIVATE_KEY="${ORACLE_SIGNER_PRIVATE_KEY}" \
             CORS_ORIGIN="${CORS_ORIGIN}" \
             NODE_ENV="${NODE_ENV}" \
+            CLOB_WSS_URL="${CLOB_WSS_URL}" \
+            QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
             POOL_ADDRESS="${POOL_ADDRESS}" \
             CORE_ADDRESS="${CORE_ADDRESS}" \
             VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
@@ -86,6 +90,8 @@ jobs:
                 "ORACLE_SIGNER_PRIVATE_KEY=${ORACLE_SIGNER_PRIVATE_KEY}" \
                 "CORS_ORIGIN=${CORS_ORIGIN}" \
                 "NODE_ENV=${NODE_ENV}" \
+                "CLOB_WSS_URL=${CLOB_WSS_URL}" \
+                "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
                 "POOL_ADDRESS=${POOL_ADDRESS}" \
                 "CORE_ADDRESS=${CORE_ADDRESS}" \
                 "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
@@ -149,6 +155,8 @@ jobs:
             secret/data/prod/rest-api ORACLE_SIGNER_PRIVATE_KEY ;
             secret/data/prod/rest-api CORS_ORIGIN ;
             secret/data/prod/rest-api NODE_ENV ;
+            secret/data/prod/rest-api CLOB_WSS_URL ;
+            secret/data/prod/rest-api QUOTE_ENGINE_URL ;
             secret/data/prod/addresses POOL_ADDRESS ;
             secret/data/prod/addresses CORE_ADDRESS ;
             secret/data/prod/addresses VIEWS_ADDRESS ;
@@ -175,6 +183,8 @@ jobs:
             ORACLE_SIGNER_PRIVATE_KEY="${ORACLE_SIGNER_PRIVATE_KEY}" \
             CORS_ORIGIN="${CORS_ORIGIN}" \
             NODE_ENV="${NODE_ENV}" \
+            CLOB_WSS_URL="${CLOB_WSS_URL}" \
+            QUOTE_ENGINE_URL="${QUOTE_ENGINE_URL}" \
             POOL_ADDRESS="${POOL_ADDRESS}" \
             CORE_ADDRESS="${CORE_ADDRESS}" \
             VIEWS_ADDRESS="${VIEWS_ADDRESS}" \
@@ -194,6 +204,8 @@ jobs:
                 "ORACLE_SIGNER_PRIVATE_KEY=${ORACLE_SIGNER_PRIVATE_KEY}" \
                 "CORS_ORIGIN=${CORS_ORIGIN}" \
                 "NODE_ENV=${NODE_ENV}" \
+                "CLOB_WSS_URL=${CLOB_WSS_URL}" \
+                "QUOTE_ENGINE_URL=${QUOTE_ENGINE_URL}" \
                 "POOL_ADDRESS=${POOL_ADDRESS}" \
                 "CORE_ADDRESS=${CORE_ADDRESS}" \
                 "VIEWS_ADDRESS=${VIEWS_ADDRESS}" \
