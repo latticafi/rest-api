@@ -60,6 +60,8 @@ describe("scanActiveLoans", () => {
     expect(result).toHaveLength(1);
     expect(result[0].reason).toBe("expired");
     expect(result[0].loanId).toBe(1);
+    expect(result[0].tokenId).toBe("99999999999999999999");
+    expect(result[0].collateralAmount).toBe("1000000000");
   });
 
   test("detects undercollateralized loans", async () => {
