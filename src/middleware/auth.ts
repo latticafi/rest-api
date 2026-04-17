@@ -2,7 +2,7 @@ import type { Context, Next } from "hono";
 
 import { verifyJWT } from "@/lib/jwt";
 
-const PUBLIC_PATHS = ["/auth/", "/doc", "/health", "/markets"];
+const PUBLIC_PATHS = ["/auth/", "/doc", "/health", "/markets", "/prices"];
 const PUBLIC_EXACT = ["/pool", "/pool/preview-liquidation"];
 
 const ADMIN_WALLETS = new Set(
