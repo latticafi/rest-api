@@ -76,6 +76,33 @@ export const poolCoreAbi = [
     inputs: [{ name: "condition_id", type: "bytes32" }],
     outputs: [],
   },
+  {
+    name: "get_loan",
+    type: "function",
+    stateMutability: "view",
+    inputs: [{ name: "loan_id", type: "uint256" }],
+    outputs: [
+      {
+        name: "",
+        type: "tuple",
+        components: [
+          { name: "borrower", type: "address" },
+          { name: "condition_id", type: "bytes32" },
+          { name: "token_id", type: "uint256" },
+          { name: "collateral_amount", type: "uint256" },
+          { name: "principal", type: "uint256" },
+          { name: "premium_paid", type: "uint256" },
+          { name: "interest_due", type: "uint256" },
+          { name: "interest_rate_bps", type: "uint256" },
+          { name: "liquidation_price", type: "uint256" },
+          { name: "epoch_start", type: "uint256" },
+          { name: "epoch_end", type: "uint256" },
+          { name: "repaid", type: "bool" },
+          { name: "liquidated", type: "bool" },
+        ],
+      },
+    ],
+  },
 ] as const;
 
 export const lendingPoolAbi = [
@@ -151,6 +178,60 @@ export const lendingPoolAbi = [
     stateMutability: "nonpayable",
     inputs: [],
     outputs: [],
+  },
+  {
+    name: "Deposited",
+    type: "event",
+    inputs: [
+      { name: "lender", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+      { name: "shares", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    name: "Withdrawn",
+    type: "event",
+    inputs: [
+      { name: "lender", type: "address", indexed: true },
+      { name: "shares", type: "uint256", indexed: false },
+      { name: "amount", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    name: "LoanOriginated",
+    type: "event",
+    inputs: [
+      { name: "loan_id", type: "uint256", indexed: true },
+      { name: "borrower", type: "address", indexed: true },
+      { name: "condition_id", type: "bytes32", indexed: true },
+      { name: "principal", type: "uint256", indexed: false },
+      { name: "premium", type: "uint256", indexed: false },
+      { name: "epoch_end", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    name: "LoanRepaid",
+    type: "event",
+    inputs: [{ name: "loan_id", type: "uint256", indexed: true }],
+  },
+  {
+    name: "LoanRolled",
+    type: "event",
+    inputs: [
+      { name: "old_loan_id", type: "uint256", indexed: true },
+      { name: "new_loan_id", type: "uint256", indexed: true },
+    ],
+  },
+  {
+    name: "LoanLiquidated",
+    type: "event",
+    inputs: [
+      { name: "loan_id", type: "uint256", indexed: true },
+      { name: "collateral_to", type: "address", indexed: true },
+      { name: "token_id", type: "uint256", indexed: false },
+      { name: "collateral_amount", type: "uint256", indexed: false },
+      { name: "principal", type: "uint256", indexed: false },
+    ],
   },
 ] as const;
 
