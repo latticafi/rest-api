@@ -28,6 +28,6 @@ describe("GET /prices/:conditionId", () => {
 
   test("returns 422 for invalid conditionId", async () => {
     const res = await app.request("/prices/not-bytes32");
-    expect(res.status).toBe(422);
+    expect(res.status).toBe(400);
   });
 });

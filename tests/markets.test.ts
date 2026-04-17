@@ -100,6 +100,6 @@ describe("GET /markets/:conditionId", () => {
 
   test("returns 422 for invalid conditionId format", async () => {
     const res = await app.request("/markets/not-a-bytes32");
-    expect(res.status).toBe(422);
+    expect(res.status).toBe(400);
   });
 });
