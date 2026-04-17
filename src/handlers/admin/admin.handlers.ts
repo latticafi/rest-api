@@ -14,6 +14,7 @@ import { markets } from "@/db/schema";
 import { lendingPoolAbi, poolCoreAbi } from "@/lib/abis";
 import { getContract, getPublicClient } from "@/lib/chain";
 import { getOperatorClient } from "@/lib/operator";
+import { subscribeMarket } from "@/lib/priceFeed";
 
 export const onboardMarket: AppRouteHandler<OnboardMarketRoute> = async (c) => {
   const body = c.req.valid("json");
@@ -61,6 +62,8 @@ export const onboardMarket: AppRouteHandler<OnboardMarketRoute> = async (c) => {
       active: true,
     })
     .returning();
+
+  await subscribeMarket(market.conditionId, market.tokenId);
 
   return c.json(
     {
