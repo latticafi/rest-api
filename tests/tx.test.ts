@@ -4,13 +4,9 @@ import app from "@/app";
 
 import { cleanDb, getAuthToken, testAccount } from "./setup";
 
-const POOL = "0x0000000000000000000000000000000000000001";
-const USDC = "0x0000000000000000000000000000000000000002";
-const CTF = "0x0000000000000000000000000000000000000003";
-
-process.env.POOL_ADDRESS = POOL;
-process.env.USDC_ADDRESS = USDC;
-process.env.CTF_ADDRESS = CTF;
+const POOL = process.env.POOL_ADDRESS!;
+const USDC = process.env.USDC_ADDRESS!;
+const CTF = process.env.CTF_ADDRESS!;
 
 let token: string;
 
