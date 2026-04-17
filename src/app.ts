@@ -10,6 +10,7 @@ import marketsRouter from "@/routes/markets/markets.index";
 import poolRouter from "@/routes/pool/pool.index";
 import pricesRouter from "@/routes/prices/prices.index";
 import quotesRouter from "@/routes/quotes/quotes.index";
+import txRouter from "@/routes/tx/tx.index";
 import usersRouter from "@/routes/users/users.index";
 
 const app = createApp();
@@ -32,6 +33,7 @@ app.route("/", marketsRouter);
 app.route("/", poolRouter);
 app.route("/", pricesRouter);
 app.route("/", quotesRouter);
+app.route("/", txRouter);
 app.route("/", usersRouter);
 
 configureOpenAPI(app);
