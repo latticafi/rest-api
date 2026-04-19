@@ -10,7 +10,19 @@ mock.module("@/lib/chain", () => ({
   getPublicClient: () => ({
     getBlockNumber: async () => MOCK_HEAD,
   }),
-  getContract: () => "0x0000000000000000000000000000000000000001",
+  getContract: (name: string) =>
+    process.env[
+      {
+        pool: "POOL_ADDRESS",
+        core: "CORE_ADDRESS",
+        views: "VIEWS_ADDRESS",
+        oracle: "ORACLE_ADDRESS",
+        controller: "CONTROLLER_ADDRESS",
+        reserve: "RESERVE_ADDRESS",
+        usdc: "USDC_ADDRESS",
+        ctf: "CTF_ADDRESS",
+      }[name] ?? ""
+    ] || "0x0000000000000000000000000000000000000001",
 }));
 
 const { getCursor, setCursor } = await import("@/indexer/cursor");
