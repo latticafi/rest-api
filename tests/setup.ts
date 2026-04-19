@@ -3,7 +3,14 @@ import { privateKeyToAccount } from "viem/accounts";
 import { createSiweMessage } from "viem/siwe";
 
 import { db } from "@/db";
-import { markets, users } from "@/db/schema";
+import {
+  depositEvents,
+  indexerCursor,
+  loans,
+  markets,
+  users,
+  withdrawEvents,
+} from "@/db/schema";
 
 spyOn(console, "error").mockImplementation(() => {});
 
@@ -22,6 +29,24 @@ export const nonAdminAccount = privateKeyToAccount(NON_ADMIN_PK);
 export const NON_ADMIN_ADDRESS = nonAdminAccount.address.toLowerCase();
 
 process.env.ADMIN_WALLETS = TEST_ADDRESS;
+process.env.POOL_ADDRESS =
+  process.env.POOL_ADDRESS || "0x0000000000000000000000000000000000000001";
+process.env.USDC_ADDRESS =
+  process.env.USDC_ADDRESS || "0x0000000000000000000000000000000000000002";
+process.env.CTF_ADDRESS =
+  process.env.CTF_ADDRESS || "0x0000000000000000000000000000000000000003";
+process.env.CORE_ADDRESS =
+  process.env.CORE_ADDRESS || "0x0000000000000000000000000000000000000004";
+process.env.VIEWS_ADDRESS =
+  process.env.VIEWS_ADDRESS || "0x0000000000000000000000000000000000000005";
+process.env.ORACLE_ADDRESS =
+  process.env.ORACLE_ADDRESS || "0x0000000000000000000000000000000000000006";
+process.env.CONTROLLER_ADDRESS =
+  process.env.CONTROLLER_ADDRESS ||
+  "0x0000000000000000000000000000000000000007";
+process.env.RESERVE_ADDRESS =
+  process.env.RESERVE_ADDRESS || "0x0000000000000000000000000000000000000008";
+process.env.CHAIN_ID = process.env.CHAIN_ID || "137";
 
 export async function createSiwePayload(nonce: string, account = testAccount) {
   const message = createSiweMessage({
@@ -56,6 +81,10 @@ export async function getAuthToken(
 }
 
 export async function cleanDb() {
+  await db.delete(depositEvents);
+  await db.delete(withdrawEvents);
+  await db.delete(loans);
+  await db.delete(indexerCursor);
   await db.delete(markets);
   await db.delete(users);
 }

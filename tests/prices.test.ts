@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 
 import app from "@/app";
+import { clearPrices } from "@/pricefeed";
 
 import { cleanDb } from "./setup";
 
@@ -8,6 +9,7 @@ const VALID_CID =
   "0xcafe000000000000000000000000000000000000000000000000000000000000";
 
 beforeEach(async () => {
+  clearPrices();
   await cleanDb();
 });
 
@@ -26,7 +28,7 @@ describe("GET /prices/:conditionId", () => {
     expect([200, 404]).toContain(res.status);
   });
 
-  test("returns 422 for invalid conditionId", async () => {
+  test("returns 400 for invalid conditionId", async () => {
     const res = await app.request("/prices/not-bytes32");
     expect(res.status).toBe(400);
   });

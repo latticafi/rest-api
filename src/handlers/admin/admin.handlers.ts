@@ -14,7 +14,7 @@ import { markets } from "@/db/schema";
 import { lendingPoolAbi, poolCoreAbi } from "@/lib/abis";
 import { getContract, getPublicClient } from "@/lib/chain";
 import { getOperatorClient } from "@/lib/operator";
-import { subscribeMarket } from "@/lib/priceFeed";
+import { subscribeMarket } from "@/pricefeed";
 
 export const onboardMarket: AppRouteHandler<OnboardMarketRoute> = async (c) => {
   const body = c.req.valid("json");
