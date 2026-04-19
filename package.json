@@ -37,7 +37,7 @@
     "@commitlint/config-conventional": "^20.5.0",
     "@types/bun": "latest",
     "drizzle-kit": "^0.31.10",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3"
