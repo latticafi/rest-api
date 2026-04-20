@@ -33,7 +33,7 @@ jobs:
             secret/data/staging/ci HETZNER_SSH_KEY ;
             secret/data/staging/ci GHCR_PAT ;
             secret/data/staging/ci API_DOMAIN ;
-            secret/data/staging/rest-api DATABASE_URL ;
+            secret/data/staging/infra PG_PASSWORD ;
             secret/data/staging/rest-api JWT_SECRET ;
             secret/data/staging/rest-api SIWE_DOMAIN ;
             secret/data/staging/rest-api RPC_URL ;
@@ -62,6 +62,8 @@ jobs:
           echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@postgres:5432/lattica"
 
           ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
             GHCR_PAT="${GHCR_PAT}" \
@@ -162,7 +164,7 @@ jobs:
             secret/data/prod/ci HETZNER_SSH_KEY ;
             secret/data/prod/ci GHCR_PAT ;
             secret/data/prod/ci API_DOMAIN ;
-            secret/data/prod/rest-api DATABASE_URL ;
+            secret/data/prod/infra PG_PASSWORD ;
             secret/data/prod/rest-api JWT_SECRET ;
             secret/data/prod/rest-api SIWE_DOMAIN ;
             secret/data/prod/rest-api RPC_URL ;
@@ -191,6 +193,8 @@ jobs:
           echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
+
+          DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@postgres:5432/lattica"
 
           ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
             GHCR_PAT="${GHCR_PAT}" \
