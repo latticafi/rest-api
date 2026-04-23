@@ -127,6 +127,7 @@ jobs:
 
               cd /opt/infra
               docker compose --profile app pull rest-api
+              docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
               docker exec caddy caddy reload --config /etc/caddy/Caddyfile
 
@@ -258,6 +259,7 @@ jobs:
 
               cd /opt/infra
               docker compose --profile app pull rest-api
+              docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
               docker exec caddy caddy reload --config /etc/caddy/Caddyfile
 
