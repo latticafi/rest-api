@@ -126,6 +126,8 @@ jobs:
           CADDY
 
               cd /opt/infra
+              docker compose up -d
+              sleep 3
               docker compose --profile app pull rest-api
               docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
@@ -258,6 +260,8 @@ jobs:
           CADDY
 
               cd /opt/infra
+              docker compose up -d
+              sleep 3
               docker compose --profile app pull rest-api
               docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
