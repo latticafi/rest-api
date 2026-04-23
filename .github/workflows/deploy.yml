@@ -21,6 +21,21 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
       - uses: hashicorp/vault-action@v3
         with:
           url: ${{ secrets.VAULT_ADDR }}
@@ -56,13 +71,30 @@ jobs:
             secret/data/staging/addresses USDC_ADDRESS ;
             secret/data/staging/addresses VIEWS_ADDRESS
 
-      - name: deploy
+      - name: setup ssh
         run: |
           mkdir -p ~/.ssh
           echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
 
+      - name: migrate
+        run: |
+          ssh -i ~/.ssh/key -N -o ExitOnForwardFailure=yes \
+            -L 5432:localhost:5432 root@"${HETZNER_HOST}" &
+          TUNNEL_PID=$!
+          trap "kill ${TUNNEL_PID} 2>/dev/null || true" EXIT
+
+          for i in {1..10}; do
+            nc -z localhost 5432 && break
+            sleep 1
+          done
+
+          DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@localhost:5432/lattica" \
+            bun x drizzle-kit migrate
+
+      - name: deploy
+        run: |
           DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@postgres:5432/lattica"
 
           ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
@@ -129,7 +161,6 @@ jobs:
               docker compose up -d
               sleep 3
               docker compose --profile app pull rest-api
-              docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
               docker exec caddy caddy reload --config /etc/caddy/Caddyfile
 
@@ -155,6 +186,21 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
       - uses: hashicorp/vault-action@v3
         with:
           url: ${{ secrets.VAULT_ADDR }}
@@ -190,13 +236,30 @@ jobs:
             secret/data/prod/addresses USDC_ADDRESS ;
             secret/data/prod/addresses VIEWS_ADDRESS
 
-      - name: deploy
+      - name: setup ssh
         run: |
           mkdir -p ~/.ssh
           echo "${HETZNER_SSH_KEY}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh-keyscan -H "${HETZNER_HOST}" >> ~/.ssh/known_hosts 2>/dev/null
 
+      - name: migrate
+        run: |
+          ssh -i ~/.ssh/key -N -o ExitOnForwardFailure=yes \
+            -L 5432:localhost:5432 root@"${HETZNER_HOST}" &
+          TUNNEL_PID=$!
+          trap "kill ${TUNNEL_PID} 2>/dev/null || true" EXIT
+
+          for i in {1..10}; do
+            nc -z localhost 5432 && break
+            sleep 1
+          done
+
+          DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@localhost:5432/lattica" \
+            bun x drizzle-kit migrate
+
+      - name: deploy
+        run: |
           DATABASE_URL="postgresql://lattica:${PG_PASSWORD}@postgres:5432/lattica"
 
           ssh -i ~/.ssh/key root@"${HETZNER_HOST}" \
@@ -263,7 +326,6 @@ jobs:
               docker compose up -d
               sleep 3
               docker compose --profile app pull rest-api
-              docker compose --profile app run --rm rest-api bun x drizzle-kit migrate
               docker compose --profile app up -d rest-api
               docker exec caddy caddy reload --config /etc/caddy/Caddyfile
 
