@@ -1,8 +1,8 @@
-import type { ApiKeyCreds } from "@polymarket/clob-client";
+import type { ApiKeyCreds } from "@polymarket/clob-client-v2";
 
-import { BuilderConfig } from "@polymarket/builder-signing-sdk";
-import { ClobClient, OrderType, Side } from "@polymarket/clob-client";
-import { Wallet } from "ethers";
+import { Chain, ClobClient, OrderType, Side } from "@polymarket/clob-client-v2";
+import { createWalletClient, http } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
 
 const CLOB_HOST = process.env.CLOB_HOST || "https://clob.polymarket.com";
 const GAMMA_API = "https://gamma-api.polymarket.com";
@@ -26,46 +26,26 @@ function getClient(): ClobClient {
     );
   }
 
-  const signer = new Wallet(process.env.OPERATOR_PRIVATE_KEY);
+  const account = privateKeyToAccount(
+    process.env.OPERATOR_PRIVATE_KEY as `0x${string}`,
+  );
+  const signer = createWalletClient({ account, transport: http() });
+
   const creds: ApiKeyCreds = {
     key: process.env.CLOB_API_KEY,
     secret: process.env.CLOB_API_SECRET,
     passphrase: process.env.CLOB_PASSPHRASE,
   };
-  const chainId = Number(process.env.CHAIN_ID || 137);
 
-  if (
-    process.env.BUILDER_API_KEY &&
-    process.env.BUILDER_SECRET &&
-    process.env.BUILDER_PASSPHRASE
-  ) {
-    const builderConfig = new BuilderConfig({
-      localBuilderCreds: {
-        key: process.env.BUILDER_API_KEY,
-        secret: process.env.BUILDER_SECRET,
-        passphrase: process.env.BUILDER_PASSPHRASE,
-      },
-    });
-    _client = new ClobClient(
-      CLOB_HOST,
-      chainId,
-      signer,
-      creds,
-      0,
-      undefined,
-      undefined,
-      undefined,
-      builderConfig,
-    );
-  } else {
-    _client = new ClobClient(CLOB_HOST, chainId, signer, creds);
-  }
+  const chain =
+    Number(process.env.CHAIN_ID || 137) === 137 ? Chain.POLYGON : Chain.AMOY;
+
+  _client = new ClobClient({ host: CLOB_HOST, chain, signer, creds });
 
   return _client;
 }
 
 type TickSize = "0.1" | "0.01" | "0.001" | "0.0001";
-
 const VALID_TICK_SIZES = new Set<string>(["0.1", "0.01", "0.001", "0.0001"]);
 
 interface MarketInfo {
@@ -81,18 +61,12 @@ async function fetchMarketInfo(
       `${GAMMA_API}/markets?condition_ids=${conditionId}`,
     );
     if (!res.ok) return null;
-
     const markets = (await res.json()) as Array<Record<string, unknown>>;
     if (!markets.length) return null;
-
     const market = markets[0];
     const raw = String(market.minimum_tick_size || "0.01");
     const tickSize = VALID_TICK_SIZES.has(raw) ? (raw as TickSize) : "0.01";
-
-    return {
-      tickSize,
-      negRisk: Boolean(market.neg_risk),
-    };
+    return { tickSize, negRisk: Boolean(market.neg_risk) };
   } catch {
     return null;
   }
@@ -119,12 +93,12 @@ export async function sellCollateral(
 
   try {
     const client = getClient();
-
     const resp = await client.createAndPostMarketOrder(
       {
         tokenID: tokenId,
         amount: shares,
         side: Side.SELL,
+        orderType: OrderType.FOK, // required inside order params in v2
       },
       { tickSize: marketInfo.tickSize, negRisk: marketInfo.negRisk },
       OrderType.FOK,
