@@ -1,8 +1,12 @@
 shellEmulator: true
 
 trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 10080
 
 onlyBuiltDependencies:
   - bufferutil
   - esbuild
   - utf-8-validate
+
+allowBuilds:
+  esbuild: true
