@@ -36,7 +36,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: hashicorp/vault-action@v3
+      - uses: hashicorp/vault-action@v4
         with:
           url: ${{ secrets.VAULT_ADDR }}
           method: jwt
@@ -201,7 +201,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - uses: hashicorp/vault-action@v3
+      - uses: hashicorp/vault-action@v4
         with:
           url: ${{ secrets.VAULT_ADDR }}
           method: jwt
